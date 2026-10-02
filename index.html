@@ -90,26 +90,6 @@
             box-shadow: 0 0 8px var(--green-price);
         }
 
-        .btn-settings {
-            background: var(--panel-bg);
-            border: 1px solid var(--panel-border);
-            color: var(--text-main);
-            padding: 0.6rem 1.2rem;
-            border-radius: 10px;
-            cursor: pointer;
-            font-weight: 600;
-            font-size: 0.9rem;
-            transition: all 0.2s;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .btn-settings:hover {
-            border-color: var(--accent-purple);
-            background: #1a202c;
-        }
-
         /* Main Grid Layout */
         .main-layout {
             display: grid;
@@ -244,8 +224,6 @@
             flex-direction: column;
             justify-content: space-between;
             transition: all 0.2s;
-            position: relative;
-            overflow: hidden;
         }
 
         .job-card:hover {
@@ -300,10 +278,6 @@
             color: #d1d5db;
             line-height: 1.5;
             margin-bottom: 1.25rem;
-            display: -webkit-box;
-            -webkit-line-clamp: 3;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
         }
 
         .card-actions {
@@ -317,64 +291,16 @@
             color: white;
             text-decoration: none;
             text-align: center;
-            padding: 0.61rem;
+            padding: 0.75rem;
             border-radius: 8px;
             font-weight: 700;
             font-size: 0.85rem;
             transition: background 0.2s;
-            display: inline-block;
+            display: block;
         }
 
         .btn-apply:hover {
             background: var(--accent-purple-hover);
-        }
-
-        /* Modal Settings */
-        .modal-overlay {
-            position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0, 0, 0, 0.8);
-            backdrop-filter: blur(5px);
-            display: none;
-            align-items: center;
-            justify-content: center;
-            z-index: 1000;
-        }
-
-        .modal {
-            background: var(--panel-bg);
-            border: 1px solid var(--panel-border);
-            width: 90%;
-            max-width: 500px;
-            border-radius: 16px;
-            padding: 1.5rem;
-        }
-
-        .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1.25rem;
-        }
-
-        .close-modal {
-            background: none;
-            border: none;
-            color: var(--text-muted);
-            font-size: 1.5rem;
-            cursor: pointer;
-        }
-
-        .btn-test {
-            width: 100%;
-            background: #2563eb;
-            color: white;
-            border: none;
-            padding: 0.75rem;
-            border-radius: 8px;
-            font-weight: 700;
-            cursor: pointer;
-            margin-top: 1rem;
         }
     </style>
 </head>
@@ -390,9 +316,6 @@
                     <p><span class="status-dot"></span> Sistem Pemantau Lowongan 24 Jam</p>
                 </div>
             </div>
-            <button class="btn-settings" onclick="openModal()">
-                <span>🔔</span> Pengaturan Notifikasi
-            </button>
         </header>
 
         <!-- Main Layout -->
@@ -483,24 +406,6 @@
         </div>
     </div>
 
-    <!-- Modal Settings -->
-    <div class="modal-overlay" id="modalOverlay">
-        <div class="modal">
-            <div class="modal-header">
-                <h3>Konfigurasi Webhook Notifikasi</h3>
-                <button class="close-modal" onclick="closeModal()">&times;</button>
-            </div>
-            <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:1rem;">Masukkan Discord Webhook URL milikmu untuk menerima notifikasi otomatis langsung ke Discord.</p>
-            
-            <div class="filter-group">
-                <label>Discord Webhook URL</label>
-                <input type="text" class="input-search" id="webhookInput" placeholder="https://discord.com/api/webhooks/...">
-            </div>
-
-            <button class="btn-test" onclick="testNotification()">Kirim Notifikasi Uji Coba</button>
-        </div>
-    </div>
-
     <script>
         let currentCategory = 'All';
 
@@ -546,7 +451,7 @@
                     url: "https://x.com/search?q=hiring%20illustrator"
                 },
                 {
-                    title: "Splash Art Karakter Anime Anime MMORPG",
+                    title: "Splash Art Karakter Anime MMORPG",
                     cat: "Splash Art",
                     platform: "ArtStation",
                     price: "$1500",
@@ -580,35 +485,6 @@
 
             jobGrid.insertAdjacentHTML('afterbegin', newCardHTML);
             filterJobs();
-        }
-
-        function openModal() {
-            document.getElementById('modalOverlay').style.display = 'flex';
-        }
-
-        function closeModal() {
-            document.getElementById('modalOverlay').style.display = 'none';
-        }
-
-        function testNotification() {
-            const webhookUrl = document.getElementById('webhookInput').value;
-            if(!webhookUrl) {
-                alert("Masukkan Discord Webhook URL terlebih dahulu!");
-                return;
-            }
-
-            fetch(webhookUrl, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    content: "🔔 **TES BERHASIL!** Robot AudriArt Radar terhubung ke Discord kamu."
-                })
-            }).then(res => {
-                if(res.ok) alert("Notifikasi berhasil dikirim ke Discord!");
-                else alert("Gagal mengirim notifikasi. Periksa kembali URL Webhook.");
-            }).catch(err => {
-                alert("Terjadi kesalahan: " + err);
-            });
         }
     </script>
 </body>
