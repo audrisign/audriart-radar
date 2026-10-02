@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="id" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AudriArt Project Radar - Pencari Lowongan Ilustrasi</title>
+    <!-- Tailwind CSS untuk Desain -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome untuk Ikon -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Plus Jakarta Sans', 'sans-serif'] },
+                    colors: {
+                        brand: { 400: '#a78bfa', 500: '#8b5cf6', 600: '#7c3aed' },
+                        darkBg: '#090d16',
+                        darkCard: '#111726'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { background-color: #090d16; color: #f1f5f9; }
+        .glass { background: rgba(17, 23, 38, 0.8); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.05); }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col relative">
+
+    <!-- Efek Cahaya Latar -->
+    <div class="fixed top-0 left-1/4 w-96 h-96 bg-brand-600/10 rounded-full blur-[100px] -z-10"></div>
+
+    <!-- Header / Navbar -->
+    <header class="glass sticky top-0 z-30 px-6 py-4 border-b border-gray-800">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-brand-500 to-pink-500 flex justify-center items-center font-bold text-white shadow-lg">
+                    <i class="fa-solid fa-paintbrush"></i>
+                </div>
+                <div>
+                    <h1 class="font-extrabold text-xl tracking-tight text-white">AudriArt Radar</h1>
+                    <p class="text-xs text-gray-400 flex items-center gap-2">
+                        Sistem Pemantau Lowongan 24 Jam
+                        <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+                    </p>
+                </div>
+            </div>
+            <div class="flex gap-2">
+                <button onclick="toggleModal('webhookModal')" class="px-4 py-2 rounded-xl bg-gray-800 hover:bg-gray-700 text-sm font-semibold transition-all">
+                    <i class="fa-solid fa-bell text-brand-400 mr-2"></i> Pengaturan Notifikasi
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Konten Utama -->
+    <main class="max-w-7xl mx-auto w-full px-6 py-8 flex-1 grid grid-cols-1 lg:grid-cols-4 gap-6">
+        
+        <!-- Sidebar Filter -->
+        <aside class="space-y-4">
+            <div class="glass p-5 rounded-2xl">
+                <h2 class="font-bold text-gray-300 mb-4 border-b border-gray-700 pb-2">Filter Pencarian</h2>
+                
+                <div class="space-y-3">
+                    <label class="text-xs text-gray-400 font-semibold">Cari Kata Kunci</label>
+                    <input type="text" id="searchInput" oninput="renderFeed()" placeholder="Contoh: Book Cover..." class="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-2 text-sm focus:border-brand-500 outline-none text-white">
+                </div>
+
+                <div class="space-y-3 mt-4">
+                    <label class="text-xs text-gray-400 font-semibold">Kategori Spesifik</label>
+                    <div class="flex flex-wrap gap-2">
+                        <button onclick="toggleFilter('Book Cover')" class="filter-btn px-3 py-1 rounded-md bg-gray-800 text-xs text-gray-300 border border-gray-700 hover:border-brand-400">Book Cover</button>
+                        <button onclick="toggleFilter('Splash Art')" class="filter-btn px-3 py-1 rounded-md bg-gray-800 text-xs text-gray-300 border border-gray-700 hover:border-brand-400">Splash Art</button>
+                        <button onclick="toggleFilter('Concept Art')" class="filter-btn px-3 py-1 rounded-md bg-gray-800 text-xs text-gray-300 border border-gray-700 hover:border-brand-400">Concept Art</button>
+                    </div>
+                </div>
+                
+                <button onclick="simulateNewJob()" class="w-full mt-6 py-2 rounded-lg bg-brand-600 hover:bg-brand-500 text-white text-sm font-bold shadow-lg shadow-brand-500/20">
+                    <i class="fa-solid fa-plus mr-1"></i> Simulasi Job Baru
+                </button>
+            </div>
+        </aside>
+
+        <!-- Area Daftar Lowongan -->
+        <section class="lg:col-span-3 space-y-4">
+            <div class="flex justify-between items-end mb-2">
+                <h2 class="font-extrabold text-lg text-white">Daftar Proyek & Lowongan Terbaru</h2>
+                <span id="jobCount" class="text-xs bg-gray-800 px-3 py-1 rounded-full text-brand-400 font-bold border border-gray-700">0 Ditemukan</span>
+            </div>
+            
+            <div id="jobFeed" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <!-- Kartu job akan dimuat di sini oleh JavaScript -->
+            </div>
+        </section>
+    </main>
+
+    <!-- Modal Pengaturan Notifikasi -->
+    <div id="webhookModal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden flex items-center justify-center p-4">
+        <div class="glass w-full max-w-md rounded-2xl overflow-hidden border border-gray-700">
+            <div class="p-4 border-b border-gray-700 flex justify-between items-center bg-gray-900/50">
+                <h3 class="font-bold text-white"><i class="fa-solid fa-plug text-brand-400"></i> Hubungkan ke Discord/Telegram</h3>
+                <button onclick="toggleModal('webhookModal')" class="text-gray-400 hover:text-white"><i class="fa-solid fa-xmark text-xl"></i></button>
+            </div>
+            <div class="p-6 space-y-4">
+                <p class="text-xs text-gray-400 mb-2">Masukkan URL Webhook Discord kamu di sini agar robot otomatis bisa mengirimkan notifikasi saat ada lowongan baru.</p>
+                <div>
+                    <label class="text-xs font-bold text-gray-300">Discord Webhook URL</label>
+                    <input type="text" id="webhookUrl" placeholder="https://discord.com/api/webhooks/..." class="w-full mt-1 bg-gray-900 border border-gray-700 rounded-lg px-3 py-2 text-sm outline-none focus:border-brand-500">
+                </div>
+                <button onclick="testWebhook()" class="w-full py-2 bg-indigo-600 hover:bg-indigo-500 text-white rounded-lg text-sm font-bold mt-2">
+                    Kirim Pesan Tes ke Discord
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notifikasi Pop-up -->
+    <div id="toast" class="fixed bottom-5 right-5 bg-green-600 text-white px-4 py-3 rounded-xl shadow-lg transform translate-y-20 opacity-0 transition-all duration-300 font-bold text-sm flex items-center gap-2">
+        <i class="fa-solid fa-check-circle"></i> <span id="toastMsg">Sukses!</span>
+    </div>
+
+    <!-- Logika Aplikasi -->
+    <script>
+        let jobs = [
+            { id: 1, title: 'Dicari: Ilustrator Book Cover Fantasi Gelap', client: 'Penerbit Aetherium', cat: 'Book Cover', budget: '$500 - $800', desc: 'Membutuhkan ilustrasi cover buku full wraparound untuk novel terbaru kami.', platform: 'Twitter' },
+            { id: 2, title: 'Splash Art untuk Karakter Game TCG', client: 'Studio Game Indie', cat: 'Splash Art', budget: '$1200', desc: 'Dicari artist yang bisa membuat splash art dengan kualitas render tinggi (mirip Riot Games).', platform: 'ArtStation' },
+            { id: 3, title: 'Environment Concept Art - Sci Fi City', client: 'Nexus Animation', cat: 'Concept Art', budget: '$400/gambar', desc: 'Dibutuhkan 5 gambar konsep kota masa depan untuk pitch animasi.', platform: 'Reddit' }
+        ];
+
+        let activeFilters = [];
+
+        function renderFeed() {
+            const feed = document.getElementById('jobFeed');
+            const search = document.getElementById('searchInput').value.toLowerCase();
+            
+            let filtered = jobs.filter(job => {
+                const matchSearch = job.title.toLowerCase().includes(search) || job.desc.toLowerCase().includes(search);
+                const matchFilter = activeFilters.length === 0 || activeFilters.includes(job.cat);
+                return matchSearch && matchFilter;
+            });
+
+            document.getElementById('jobCount').innerText = `${filtered.length} Ditemukan`;
+
+            if (filtered.length === 0) {
+                feed.innerHTML = `<div class="col-span-full text-center py-10 text-gray-500 bg-gray-900/50 rounded-xl border border-gray-800"><i class="fa-solid fa-folder-open text-3xl mb-2"></i><p>Tidak ada lowongan yang cocok.</p></div>`;
+                return;
+            }
+
+            feed.innerHTML = filtered.map(job => `
+                <div class="glass p-5 rounded-2xl border border-gray-800 hover:border-brand-500 transition-colors">
+                    <div class="flex justify-between items-start mb-2">
+                        <span class="text-[10px] font-bold px-2 py-1 bg-gray-800 rounded border border-gray-700 text-brand-400">${job.cat}</span>
+                        <span class="text-[10px] bg-blue-900/30 text-blue-400 px-2 py-1 rounded border border-blue-900"><i class="fa-brands fa-twitter"></i> ${job.platform}</span>
+                    </div>
+                    <h3 class="font-bold text-white text-md mb-1">${job.title}</h3>
+                    <p class="text-xs text-green-400 font-semibold mb-2">${job.budget} • <span class="text-gray-400">${job.client}</span></p>
+                    <p class="text-xs text-gray-400 mb-4 line-clamp-2">${job.desc}</p>
+                    <button onclick="sendToDiscord('${job.title}')" class="w-full py-1.5 bg-gray-800 hover:bg-brand-600 text-gray-200 text-xs font-bold rounded-lg border border-gray-700 transition-colors">
+                        Kirim Alert ke Discord
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        function toggleFilter(cat) {
+            const btns = document.querySelectorAll('.filter-btn');
+            if (activeFilters.includes(cat)) {
+                activeFilters = activeFilters.filter(c => c !== cat);
+            } else {
+                activeFilters.push(cat);
+            }
+            
+            btns.forEach(btn => {
+                if(activeFilters.includes(btn.innerText)) {
+                    btn.classList.replace('bg-gray-800', 'bg-brand-600');
+                    btn.classList.replace('text-gray-300', 'text-white');
+                } else {
+                    btn.classList.replace('bg-brand-600', 'bg-gray-800');
+                    btn.classList.replace('text-white', 'text-gray-300');
+                }
+            });
+            renderFeed();
+        }
+
+        function toggleModal(id) {
+            const modal = document.getElementById(id);
+            modal.classList.toggle('hidden');
+        }
+
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toastMsg').innerText = msg;
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            setTimeout(() => toast.classList.add('translate-y-20', 'opacity-0'), 3000);
+        }
+
+        function testWebhook() {
+            const url = document.getElementById('webhookUrl').value;
+            if(!url) { alert("Masukkan URL Webhook terlebih dahulu!"); return; }
+            
+            // Dummy test webhook call
+            fetch(url, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ content: "🔔 **TES BERHASIL!** Robot AudriArt Radar terhubung ke Discord kamu." })
+            }).then(() => {
+                showToast("Pesan tes terkirim ke Discord!");
+                toggleModal('webhookModal');
+            }).catch(() => showToast("Gagal mengirim tes (Periksa URL Webhook)"));
+        }
+
+        function sendToDiscord(title) {
+            showToast(`Mengirim "${title}" ke Discord...`);
+        }
+
+        function simulateNewJob() {
+            jobs.unshift({
+                id: Date.now(),
+                title: 'URGENT: Ilustrasi Cover Buku ' + Math.floor(Math.random() * 100),
+                client: 'Penulis Independen',
+                cat: 'Book Cover',
+                budget: '$750',
+                desc: 'Job baru masuk dari hasil pencarian otomatis sistem...',
+                platform: 'Twitter'
+            });
+            renderFeed();
+            showToast("Lowongan baru ditemukan oleh Radar!");
+        }
+
+        // Inisialisasi awal
+        renderFeed();
+    </script>
+</body>
+</html>
