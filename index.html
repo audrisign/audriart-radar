@@ -30,462 +30,164 @@
         body {
             background-color: var(--bg-dark);
             color: var(--text-main);
-            min-height: 100vh;
             padding: 2rem 1rem;
+            min-height: 100vh;
         }
 
         .container {
-            max-width: 1200px;
+            max-width: 1000px;
             margin: 0 auto;
         }
 
-        /* Header */
         header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 2rem;
-            padding-bottom: 1.5rem;
-            border-bottom: 1px solid var(--panel-border);
+            text-align: center;
+            margin-bottom: 2.5rem;
         }
 
-        .brand {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .logo-icon {
-            width: 45px;
-            height: 45px;
-            background: linear-gradient(135deg, var(--accent-purple), var(--accent-cyan));
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            box-shadow: 0 4px 20px rgba(124, 58, 237, 0.4);
-        }
-
-        .brand-text h1 {
-            font-size: 1.5rem;
+        header h1 {
+            font-size: 2.2rem;
             font-weight: 800;
-            letter-spacing: -0.5px;
+            background: linear-gradient(135deg, #a78bfa, #06b6d4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
         }
 
-        .brand-text p {
-            font-size: 0.85rem;
+        header p {
             color: var(--text-muted);
-            display: flex;
-            align-items: center;
-            gap: 6px;
+            font-size: 1rem;
         }
 
-        .status-dot {
-            width: 8px;
-            height: 8px;
-            background-color: var(--green-price);
-            border-radius: 50%;
-            display: inline-block;
-            box-shadow: 0 0 8px var(--green-price);
-        }
-
-        /* Main Grid Layout */
-        .main-layout {
+        .grid {
             display: grid;
-            grid-template-columns: 280px 1fr;
-            gap: 2rem;
-        }
-
-        @media (max-width: 900px) {
-            .main-layout {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        /* Sidebar Filters */
-        .sidebar {
-            background: var(--panel-bg);
-            border: 1px solid var(--panel-border);
-            border-radius: 16px;
-            padding: 1.5rem;
-            height: fit-content;
-        }
-
-        .filter-group {
-            margin-bottom: 1.5rem;
-        }
-
-        .filter-group label {
-            display: block;
-            font-size: 0.85rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            color: var(--text-muted);
-            margin-bottom: 0.75rem;
-            letter-spacing: 0.5px;
-        }
-
-        .input-search {
-            width: 100%;
-            background: var(--bg-dark);
-            border: 1px solid var(--panel-border);
-            padding: 0.75rem 1rem;
-            border-radius: 10px;
-            color: var(--text-main);
-            font-size: 0.9rem;
-            outline: none;
-        }
-
-        .input-search:focus {
-            border-color: var(--accent-purple);
-        }
-
-        .category-pills {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-        }
-
-        .pill {
-            background: var(--bg-dark);
-            border: 1px solid var(--panel-border);
-            padding: 0.4rem 0.8rem;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            color: var(--text-muted);
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .pill.active, .pill:hover {
-            background: var(--accent-purple);
-            color: #fff;
-            border-color: var(--accent-purple);
-        }
-
-        .btn-simulate {
-            width: 100%;
-            background: linear-gradient(135deg, var(--accent-purple), var(--accent-purple-hover));
-            color: white;
-            border: none;
-            padding: 0.8rem;
-            border-radius: 10px;
-            font-weight: 700;
-            cursor: pointer;
-            margin-top: 1rem;
-            transition: transform 0.1s;
-        }
-
-        .btn-simulate:active {
-            transform: scale(0.98);
-        }
-
-        /* Content Area */
-        .content-area {
-            display: flex;
-            flex-direction: column;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
             gap: 1.5rem;
         }
 
-        .section-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .section-title {
-            font-size: 1.2rem;
-            font-weight: 700;
-        }
-
-        .badge-count {
-            background: rgba(124, 58, 237, 0.2);
-            color: #a78bfa;
-            padding: 0.2rem 0.6rem;
-            border-radius: 12px;
-            font-size: 0.8rem;
-            font-weight: 700;
-        }
-
-        .job-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-            gap: 1.25rem;
-        }
-
-        /* Job Cards */
-        .job-card {
-            background: var(--card-bg);
+        .card {
+            background-color: var(--card-bg);
             border: 1px solid var(--panel-border);
-            border-radius: 16px;
-            padding: 1.25rem;
+            border-radius: 12px;
+            padding: 1.5rem;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            transition: all 0.2s;
+            transition: transform 0.2s, border-color 0.2s;
         }
 
-        .job-card:hover {
-            border-color: rgba(124, 58, 237, 0.5);
-            transform: translateY(-2px);
-            background: var(--card-hover);
+        .card:hover {
+            transform: translateY(-4px);
+            border-color: var(--accent-purple);
         }
 
-        .card-top {
+        .card-tag {
+            align-self: flex-start;
+            background: rgba(124, 58, 237, 0.15);
+            color: #c084fc;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .card h3 {
+            font-size: 1.1rem;
+            line-height: 1.4;
+            margin-bottom: 1rem;
+            color: var(--text-main);
+        }
+
+        .card-footer {
             display: flex;
             justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 0.75rem;
+            align-items: center;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--panel-border);
         }
 
-        .tag-category {
-            font-size: 0.75rem;
-            font-weight: 700;
-            padding: 0.25rem 0.6rem;
-            border-radius: 6px;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            color: #e5e7eb;
-        }
-
-        .tag-platform {
-            font-size: 0.75rem;
-            color: var(--accent-cyan);
-            font-weight: 600;
-        }
-
-        .job-title {
-            font-size: 1.05rem;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-            line-height: 1.4;
-        }
-
-        .job-meta {
+        .source {
             font-size: 0.85rem;
             color: var(--text-muted);
-            margin-bottom: 0.75rem;
         }
 
-        .job-price {
-            color: var(--green-price);
-            font-weight: 700;
-        }
-
-        .job-desc {
-            font-size: 0.85rem;
-            color: #d1d5db;
-            line-height: 1.5;
-            margin-bottom: 1.25rem;
-        }
-
-        .card-actions {
-            display: flex;
-            gap: 0.5rem;
-        }
-
-        .btn-apply {
-            flex: 1;
-            background: var(--accent-purple);
+        .btn {
+            display: inline-block;
+            background-color: var(--accent-purple);
             color: white;
             text-decoration: none;
-            text-align: center;
-            padding: 0.75rem;
+            padding: 0.5rem 1rem;
             border-radius: 8px;
-            font-weight: 700;
             font-size: 0.85rem;
+            font-weight: 600;
             transition: background 0.2s;
-            display: block;
         }
 
-        .btn-apply:hover {
-            background: var(--accent-purple-hover);
+        .btn:hover {
+            background-color: var(--accent-purple-hover);
+        }
+
+        .empty-state {
+            text-align: center;
+            grid-column: 1 / -1;
+            padding: 3rem;
+            color: var(--text-muted);
         }
     </style>
 </head>
 <body>
-
     <div class="container">
-        <!-- Header -->
         <header>
-            <div class="brand">
-                <div class="logo-icon">🎨</div>
-                <div class="brand-text">
-                    <h1>AudriArt Radar</h1>
-                    <p><span class="status-dot"></span> Sistem Pemantau Lowongan 24 Jam</p>
-                </div>
-            </div>
+            <h1>AudriArt Project Radar 📡</h1>
+            <p>Pemindai Lowongan Ilustrasi & Komisi Seni Otomatis</p>
         </header>
 
-        <!-- Main Layout -->
-        <div class="main-layout">
-            <!-- Sidebar -->
-            <aside class="sidebar">
-                <div class="filter-group">
-                    <label>Filter Kata Kunci</label>
-                    <input type="text" class="input-search" id="searchInput" placeholder="Cari: Book Cover..." onkeyup="filterJobs()">
-                </div>
-
-                <div class="filter-group">
-                    <label>Kategori Spesifik</label>
-                    <div class="category-pills">
-                        <span class="pill active" onclick="setCategory('All', this)">Semua</span>
-                        <span class="pill" onclick="setCategory('Book Cover', this)">Book Cover</span>
-                        <span class="pill" onclick="setCategory('Splash Art', this)">Splash Art</span>
-                        <span class="pill" onclick="setCategory('Concept Art', this)">Concept Art</span>
-                    </div>
-                </div>
-
-                <button class="btn-simulate" onclick="addSimulatedJob()">+ Simulasi Job Baru</button>
-            </aside>
-
-            <!-- Job List Area -->
-            <main class="content-area">
-                <div class="section-header">
-                    <h2 class="section-title">Daftar Proyek & Lowongan Terbaru</h2>
-                    <span class="badge-count" id="jobCount">3 Ditemukan</span>
-                </div>
-
-                <div class="job-grid" id="jobGrid">
-                    <!-- Sample Card 1 -->
-                    <div class="job-card" data-category="Book Cover" data-title="Dicari: Illustrator Book Cover Fantasi Gelap">
-                        <div>
-                            <div class="card-top">
-                                <span class="tag-category">Book Cover</span>
-                                <span class="tag-platform">Twitter / X</span>
-                            </div>
-                            <h3 class="job-title">Dicari: Illustrator Book Cover Fantasi Gelap</h3>
-                            <div class="job-meta">
-                                <span class="job-price">$500 - $800</span> • Penerbit Aetherium
-                            </div>
-                            <p class="job-desc">Membutuhkan ilustrasi cover buku full wraparound untuk novel fantasi terbaru kami. Harus berpengalaman merender karakter dan suasana gelap.</p>
-                        </div>
-                        <div class="card-actions">
-                            <a href="https://x.com/search?q=hiring%20illustrator%20book%20cover" target="_blank" class="btn-apply">Buka Lowongan ↗</a>
-                        </div>
-                    </div>
-
-                    <!-- Sample Card 2 -->
-                    <div class="job-card" data-category="Splash Art" data-title="Splash Art untuk Karakter Game TCG">
-                        <div>
-                            <div class="card-top">
-                                <span class="tag-category">Splash Art</span>
-                                <span class="tag-platform">ArtStation</span>
-                            </div>
-                            <h3 class="job-title">Splash Art untuk Karakter Game TCG</h3>
-                            <div class="job-meta">
-                                <span class="job-price">$1200</span> • Studio Game Indie
-                            </div>
-                            <p class="job-desc">Dicari artist yang bisa membuat splash art dengan kualitas render tinggi (mirip Riot Games) untuk karakter utama game kartu kami.</p>
-                        </div>
-                        <div class="card-actions">
-                            <a href="https://www.artstation.com/jobs" target="_blank" class="btn-apply">Buka Lowongan ↗</a>
-                        </div>
-                    </div>
-
-                    <!-- Sample Card 3 -->
-                    <div class="job-card" data-category="Concept Art" data-title="Environment Concept Art - Sci Fi City">
-                        <div>
-                            <div class="card-top">
-                                <span class="tag-category">Concept Art</span>
-                                <span class="tag-platform">Reddit</span>
-                            </div>
-                            <h3 class="job-title">Environment Concept Art - Sci Fi City</h3>
-                            <div class="job-meta">
-                                <span class="job-price">$400/gambar</span> • Nexus Animation
-                            </div>
-                            <p class="job-desc">Dibutuhkan 5 gambar konsep kota masa depan untuk pitch proyek animasi 2D. Gaya visual semi-realistis.</p>
-                        </div>
-                        <div class="card-actions">
-                            <a href="https://www.reddit.com/r/HungryArtists/" target="_blank" class="btn-apply">Buka Lowongan ↗</a>
-                        </div>
-                    </div>
-                </div>
-            </main>
+        <div class="grid" id="jobs-container">
+            <div class="empty-state">Sedang memuat lowongan terbaru...</div>
         </div>
     </div>
 
     <script>
-        let currentCategory = 'All';
-
-        function filterJobs() {
-            const searchValue = document.getElementById('searchInput').value.toLowerCase();
-            const cards = document.querySelectorAll('.job-card');
-            let visibleCount = 0;
-
-            cards.forEach(card => {
-                const title = card.getAttribute('data-title').toLowerCase();
-                const category = card.getAttribute('data-category');
-
-                const matchesSearch = title.includes(searchValue);
-                const matchesCategory = (currentCategory === 'All') || (category === currentCategory);
-
-                if (matchesSearch && matchesCategory) {
-                    card.style.display = 'flex';
-                    visibleCount++;
-                } else {
-                    card.style.display = 'none';
+        async function loadJobs() {
+            const container = document.getElementById('jobs-container');
+            try {
+                // Mengambil data dari jobs.json yang digenerate otomatis oleh scraper.py
+                const response = await fetch('jobs.json?t=' + new Date().getTime());
+                if (!response.ok) throw new Error('File jobs.json belum ada');
+                
+                const jobs = await response.json();
+                
+                if (jobs.length === 0) {
+                    container.innerHTML = '<div class="empty-state">Belum ada lowongan baru ditemukan pada pemindaian terakhir.</div>';
+                    return;
                 }
-            });
 
-            document.getElementById('jobCount').innerText = `${visibleCount} Ditemukan`;
-        }
-
-        function setCategory(cat, element) {
-            currentCategory = cat;
-            document.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
-            element.classList.add('active');
-            filterJobs();
-        }
-
-        function addSimulatedJob() {
-            const sampleJobs = [
-                {
-                    title: "Ilustrator Cover Novel Fantasi YA",
-                    cat: "Book Cover",
-                    platform: "Twitter / X",
-                    price: "$600 - $900",
-                    client: "Starlight Publishing",
-                    desc: "Mencari illustrator untuk membuat ilustrasi cover depan novel Young Adult dengan gaya semi-realistis.",
-                    url: "https://x.com/search?q=hiring%20illustrator"
-                },
-                {
-                    title: "Splash Art Karakter Anime MMORPG",
-                    cat: "Splash Art",
-                    platform: "ArtStation",
-                    price: "$1500",
-                    client: "Aether Games",
-                    desc: "Dibutuhkan 1 Splash Art promosi dengan latar belakang elemen sihir yang dinamis.",
-                    url: "https://www.artstation.com/jobs"
-                }
-            ];
-
-            const randomJob = sampleJobs[Math.floor(Math.random() * sampleJobs.length)];
-            const jobGrid = document.getElementById('jobGrid');
-
-            const newCardHTML = `
-                <div class="job-card" data-category="${randomJob.cat}" data-title="${randomJob.title}">
-                    <div>
-                        <div class="card-top">
-                            <span class="tag-category">${randomJob.cat}</span>
-                            <span class="tag-platform">${randomJob.platform}</span>
+                container.innerHTML = jobs.map(job => `
+                    <div class="card">
+                        <div>
+                            <div class="card-tag">${job.keyword || 'Lowongan'}</div>
+                            <h3>${job.title}</h3>
                         </div>
-                        <h3 class="job-title">${randomJob.title}</h3>
-                        <div class="job-meta">
-                            <span class="job-price">${randomJob.price}</span> • ${randomJob.client}
+                        <div class="card-footer">
+                            <span class="source">${job.source}</span>
+                            <a href="${job.url}" target="_blank" rel="noopener noreferrer" class="btn">Buka Lowongan ↗</a>
                         </div>
-                        <p class="job-desc">${randomJob.desc}</p>
                     </div>
-                    <div class="card-actions">
-                        <a href="${randomJob.url}" target="_blank" class="btn-apply">Buka Lowongan ↗</a>
-                    </div>
-                </div>
-            `;
+                `).join('');
 
-            jobGrid.insertAdjacentHTML('afterbegin', newCardHTML);
-            filterJobs();
+            } catch (error) {
+                console.log(error);
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <p>Belum ada data pemindaian otomatis terbaru.</p>
+                        <p style="font-size: 0.85rem; margin-top: 0.5rem;">Robot akan membuat data pertama saat jadwal pemindaian berikutnya berjalan.</p>
+                    </div>
+                `;
+            }
         }
+
+        loadJobs();
     </script>
 </body>
 </html>
