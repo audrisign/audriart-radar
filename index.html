@@ -1,240 +1,615 @@
 <!DOCTYPE html>
-<html lang="id" class="dark">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AudriArt Project Radar - Pencari Lowongan Ilustrasi</title>
-    <!-- Tailwind CSS untuk Desain -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- FontAwesome untuk Ikon -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
-    
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    fontFamily: { sans: ['Plus Jakarta Sans', 'sans-serif'] },
-                    colors: {
-                        brand: { 400: '#a78bfa', 500: '#8b5cf6', 600: '#7c3aed' },
-                        darkBg: '#090d16',
-                        darkCard: '#111726'
-                    }
-                }
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #0a0c10;
+            --panel-bg: #12161f;
+            --panel-border: #1e2638;
+            --accent-purple: #7c3aed;
+            --accent-purple-hover: #6d28d9;
+            --accent-cyan: #06b6d4;
+            --text-main: #f3f4f6;
+            --text-muted: #9ca3af;
+            --card-bg: #181e2a;
+            --card-hover: #1f2738;
+            --green-price: #10b981;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            min-height: 100vh;
+            padding: 2rem 1rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Header */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid var(--panel-border);
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo-icon {
+            width: 45px;
+            height: 45px;
+            background: linear-gradient(135deg, var(--accent-purple), var(--accent-cyan));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            box-shadow: 0 4px 20px rgba(124, 58, 237, 0.4);
+        }
+
+        .brand-text h1 {
+            font-size: 1.5rem;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+        }
+
+        .brand-text p {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background-color: var(--green-price);
+            border-radius: 50%;
+            display: inline-block;
+            box-shadow: 0 0 8px var(--green-price);
+        }
+
+        .btn-settings {
+            background: var(--panel-bg);
+            border: 1px solid var(--panel-border);
+            color: var(--text-main);
+            padding: 0.6rem 1.2rem;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-settings:hover {
+            border-color: var(--accent-purple);
+            background: #1a202c;
+        }
+
+        /* Main Grid Layout */
+        .main-layout {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 2rem;
+        }
+
+        @media (max-width: 900px) {
+            .main-layout {
+                grid-template-columns: 1fr;
             }
         }
-    </script>
-    <style>
-        body { background-color: #090d16; color: #f1f5f9; }
-        .glass { background: rgba(17, 23, 38, 0.8); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.05); }
+
+        /* Sidebar Filters */
+        .sidebar {
+            background: var(--panel-bg);
+            border: 1px solid var(--panel-border);
+            border-radius: 16px;
+            padding: 1.5rem;
+            height: fit-content;
+        }
+
+        .filter-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .filter-group label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 0.75rem;
+            letter-spacing: 0.5px;
+        }
+
+        .input-search {
+            width: 100%;
+            background: var(--bg-dark);
+            border: 1px solid var(--panel-border);
+            padding: 0.75rem 1rem;
+            border-radius: 10px;
+            color: var(--text-main);
+            font-size: 0.9rem;
+            outline: none;
+        }
+
+        .input-search:focus {
+            border-color: var(--accent-purple);
+        }
+
+        .category-pills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .pill {
+            background: var(--bg-dark);
+            border: 1px solid var(--panel-border);
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .pill.active, .pill:hover {
+            background: var(--accent-purple);
+            color: #fff;
+            border-color: var(--accent-purple);
+        }
+
+        .btn-simulate {
+            width: 100%;
+            background: linear-gradient(135deg, var(--accent-purple), var(--accent-purple-hover));
+            color: white;
+            border: none;
+            padding: 0.8rem;
+            border-radius: 10px;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 1rem;
+            transition: transform 0.1s;
+        }
+
+        .btn-simulate:active {
+            transform: scale(0.98);
+        }
+
+        /* Content Area */
+        .content-area {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .section-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+        }
+
+        .badge-count {
+            background: rgba(124, 58, 237, 0.2);
+            color: #a78bfa;
+            padding: 0.2rem 0.6rem;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 700;
+        }
+
+        .job-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 1.25rem;
+        }
+
+        /* Job Cards */
+        .job-card {
+            background: var(--card-bg);
+            border: 1px solid var(--panel-border);
+            border-radius: 16px;
+            padding: 1.25rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: all 0.2s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .job-card:hover {
+            border-color: rgba(124, 58, 237, 0.5);
+            transform: translateY(-2px);
+            background: var(--card-hover);
+        }
+
+        .card-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 0.75rem;
+        }
+
+        .tag-category {
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 0.25rem 0.6rem;
+            border-radius: 6px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #e5e7eb;
+        }
+
+        .tag-platform {
+            font-size: 0.75rem;
+            color: var(--accent-cyan);
+            font-weight: 600;
+        }
+
+        .job-title {
+            font-size: 1.05rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            line-height: 1.4;
+        }
+
+        .job-meta {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 0.75rem;
+        }
+
+        .job-price {
+            color: var(--green-price);
+            font-weight: 700;
+        }
+
+        .job-desc {
+            font-size: 0.85rem;
+            color: #d1d5db;
+            line-height: 1.5;
+            margin-bottom: 1.25rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .card-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .btn-apply {
+            flex: 1;
+            background: var(--accent-purple);
+            color: white;
+            text-decoration: none;
+            text-align: center;
+            padding: 0.61rem;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            transition: background 0.2s;
+            display: inline-block;
+        }
+
+        .btn-apply:hover {
+            background: var(--accent-purple-hover);
+        }
+
+        /* Modal Settings */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(5px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .modal {
+            background: var(--panel-bg);
+            border: 1px solid var(--panel-border);
+            width: 90%;
+            max-width: 500px;
+            border-radius: 16px;
+            padding: 1.5rem;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.25rem;
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .btn-test {
+            width: 100%;
+            background: #2563eb;
+            color: white;
+            border: none;
+            padding: 0.75rem;
+            border-radius: 8px;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 1rem;
+        }
     </style>
 </head>
-<body class="min-h-screen flex flex-col relative">
+<body>
 
-    <!-- Efek Cahaya Latar -->
-    <div class="fixed top-0 left-1/4 w-96 h-96 bg-brand-600/10 rounded-full blur-[100px] -z-10"></div>
-
-    <!-- Header / Navbar -->
-    <header class="glass sticky top-0 z-30 px-6 py-4 border-b border-gray-800">
-        <div class="max-w-7xl mx-auto flex justify-between items-center">
-            <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-brand-500 to-pink-500 flex justify-center items-center font-bold text-white shadow-lg">
-                    <i class="fa-solid fa-paintbrush"></i>
-                </div>
-                <div>
-                    <h1 class="font-extrabold text-xl tracking-tight text-white">AudriArt Radar</h1>
-                    <p class="text-xs text-gray-400 flex items-center gap-2">
-                        Sistem Pemantau Lowongan 24 Jam
-                        <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
-                    </p>
+    <div class="container">
+        <!-- Header -->
+        <header>
+            <div class="brand">
+                <div class="logo-icon">🎨</div>
+                <div class="brand-text">
+                    <h1>AudriArt Radar</h1>
+                    <p><span class="status-dot"></span> Sistem Pemantau Lowongan 24 Jam</p>
                 </div>
             </div>
-            <div class="flex gap-2">
-                <button onclick="toggleModal('webhookModal')" class="px-4 py-2 rounded-xl bg-gray-800 hover:bg-gray-700 text-sm font-semibold transition-all">
-                    <i class="fa-solid fa-bell text-brand-400 mr-2"></i> Pengaturan Notifikasi
-                </button>
-            </div>
-        </div>
-    </header>
+            <button class="btn-settings" onclick="openModal()">
+                <span>🔔</span> Pengaturan Notifikasi
+            </button>
+        </header>
 
-    <!-- Konten Utama -->
-    <main class="max-w-7xl mx-auto w-full px-6 py-8 flex-1 grid grid-cols-1 lg:grid-cols-4 gap-6">
-        
-        <!-- Sidebar Filter -->
-        <aside class="space-y-4">
-            <div class="glass p-5 rounded-2xl">
-                <h2 class="font-bold text-gray-300 mb-4 border-b border-gray-700 pb-2">Filter Pencarian</h2>
-                
-                <div class="space-y-3">
-                    <label class="text-xs text-gray-400 font-semibold">Cari Kata Kunci</label>
-                    <input type="text" id="searchInput" oninput="renderFeed()" placeholder="Contoh: Book Cover..." class="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-2 text-sm focus:border-brand-500 outline-none text-white">
+        <!-- Main Layout -->
+        <div class="main-layout">
+            <!-- Sidebar -->
+            <aside class="sidebar">
+                <div class="filter-group">
+                    <label>Filter Kata Kunci</label>
+                    <input type="text" class="input-search" id="searchInput" placeholder="Cari: Book Cover..." onkeyup="filterJobs()">
                 </div>
 
-                <div class="space-y-3 mt-4">
-                    <label class="text-xs text-gray-400 font-semibold">Kategori Spesifik</label>
-                    <div class="flex flex-wrap gap-2">
-                        <button onclick="toggleFilter('Book Cover')" class="filter-btn px-3 py-1 rounded-md bg-gray-800 text-xs text-gray-300 border border-gray-700 hover:border-brand-400">Book Cover</button>
-                        <button onclick="toggleFilter('Splash Art')" class="filter-btn px-3 py-1 rounded-md bg-gray-800 text-xs text-gray-300 border border-gray-700 hover:border-brand-400">Splash Art</button>
-                        <button onclick="toggleFilter('Concept Art')" class="filter-btn px-3 py-1 rounded-md bg-gray-800 text-xs text-gray-300 border border-gray-700 hover:border-brand-400">Concept Art</button>
+                <div class="filter-group">
+                    <label>Kategori Spesifik</label>
+                    <div class="category-pills">
+                        <span class="pill active" onclick="setCategory('All', this)">Semua</span>
+                        <span class="pill" onclick="setCategory('Book Cover', this)">Book Cover</span>
+                        <span class="pill" onclick="setCategory('Splash Art', this)">Splash Art</span>
+                        <span class="pill" onclick="setCategory('Concept Art', this)">Concept Art</span>
                     </div>
                 </div>
-                
-                <button onclick="simulateNewJob()" class="w-full mt-6 py-2 rounded-lg bg-brand-600 hover:bg-brand-500 text-white text-sm font-bold shadow-lg shadow-brand-500/20">
-                    <i class="fa-solid fa-plus mr-1"></i> Simulasi Job Baru
-                </button>
-            </div>
-        </aside>
 
-        <!-- Area Daftar Lowongan -->
-        <section class="lg:col-span-3 space-y-4">
-            <div class="flex justify-between items-end mb-2">
-                <h2 class="font-extrabold text-lg text-white">Daftar Proyek & Lowongan Terbaru</h2>
-                <span id="jobCount" class="text-xs bg-gray-800 px-3 py-1 rounded-full text-brand-400 font-bold border border-gray-700">0 Ditemukan</span>
-            </div>
-            
-            <div id="jobFeed" class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <!-- Kartu job akan dimuat di sini oleh JavaScript -->
-            </div>
-        </section>
-    </main>
+                <button class="btn-simulate" onclick="addSimulatedJob()">+ Simulasi Job Baru</button>
+            </aside>
 
-    <!-- Modal Pengaturan Notifikasi -->
-    <div id="webhookModal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden flex items-center justify-center p-4">
-        <div class="glass w-full max-w-md rounded-2xl overflow-hidden border border-gray-700">
-            <div class="p-4 border-b border-gray-700 flex justify-between items-center bg-gray-900/50">
-                <h3 class="font-bold text-white"><i class="fa-solid fa-plug text-brand-400"></i> Hubungkan ke Discord/Telegram</h3>
-                <button onclick="toggleModal('webhookModal')" class="text-gray-400 hover:text-white"><i class="fa-solid fa-xmark text-xl"></i></button>
-            </div>
-            <div class="p-6 space-y-4">
-                <p class="text-xs text-gray-400 mb-2">Masukkan URL Webhook Discord kamu di sini agar robot otomatis bisa mengirimkan notifikasi saat ada lowongan baru.</p>
-                <div>
-                    <label class="text-xs font-bold text-gray-300">Discord Webhook URL</label>
-                    <input type="text" id="webhookUrl" placeholder="https://discord.com/api/webhooks/..." class="w-full mt-1 bg-gray-900 border border-gray-700 rounded-lg px-3 py-2 text-sm outline-none focus:border-brand-500">
+            <!-- Job List Area -->
+            <main class="content-area">
+                <div class="section-header">
+                    <h2 class="section-title">Daftar Proyek & Lowongan Terbaru</h2>
+                    <span class="badge-count" id="jobCount">3 Ditemukan</span>
                 </div>
-                <button onclick="testWebhook()" class="w-full py-2 bg-indigo-600 hover:bg-indigo-500 text-white rounded-lg text-sm font-bold mt-2">
-                    Kirim Pesan Tes ke Discord
-                </button>
-            </div>
+
+                <div class="job-grid" id="jobGrid">
+                    <!-- Sample Card 1 -->
+                    <div class="job-card" data-category="Book Cover" data-title="Dicari: Illustrator Book Cover Fantasi Gelap">
+                        <div>
+                            <div class="card-top">
+                                <span class="tag-category">Book Cover</span>
+                                <span class="tag-platform">Twitter / X</span>
+                            </div>
+                            <h3 class="job-title">Dicari: Illustrator Book Cover Fantasi Gelap</h3>
+                            <div class="job-meta">
+                                <span class="job-price">$500 - $800</span> • Penerbit Aetherium
+                            </div>
+                            <p class="job-desc">Membutuhkan ilustrasi cover buku full wraparound untuk novel fantasi terbaru kami. Harus berpengalaman merender karakter dan suasana gelap.</p>
+                        </div>
+                        <div class="card-actions">
+                            <a href="https://x.com/search?q=hiring%20illustrator%20book%20cover" target="_blank" class="btn-apply">Buka Lowongan ↗</a>
+                        </div>
+                    </div>
+
+                    <!-- Sample Card 2 -->
+                    <div class="job-card" data-category="Splash Art" data-title="Splash Art untuk Karakter Game TCG">
+                        <div>
+                            <div class="card-top">
+                                <span class="tag-category">Splash Art</span>
+                                <span class="tag-platform">ArtStation</span>
+                            </div>
+                            <h3 class="job-title">Splash Art untuk Karakter Game TCG</h3>
+                            <div class="job-meta">
+                                <span class="job-price">$1200</span> • Studio Game Indie
+                            </div>
+                            <p class="job-desc">Dicari artist yang bisa membuat splash art dengan kualitas render tinggi (mirip Riot Games) untuk karakter utama game kartu kami.</p>
+                        </div>
+                        <div class="card-actions">
+                            <a href="https://www.artstation.com/jobs" target="_blank" class="btn-apply">Buka Lowongan ↗</a>
+                        </div>
+                    </div>
+
+                    <!-- Sample Card 3 -->
+                    <div class="job-card" data-category="Concept Art" data-title="Environment Concept Art - Sci Fi City">
+                        <div>
+                            <div class="card-top">
+                                <span class="tag-category">Concept Art</span>
+                                <span class="tag-platform">Reddit</span>
+                            </div>
+                            <h3 class="job-title">Environment Concept Art - Sci Fi City</h3>
+                            <div class="job-meta">
+                                <span class="job-price">$400/gambar</span> • Nexus Animation
+                            </div>
+                            <p class="job-desc">Dibutuhkan 5 gambar konsep kota masa depan untuk pitch proyek animasi 2D. Gaya visual semi-realistis.</p>
+                        </div>
+                        <div class="card-actions">
+                            <a href="https://www.reddit.com/r/HungryArtists/" target="_blank" class="btn-apply">Buka Lowongan ↗</a>
+                        </div>
+                    </div>
+                </div>
+            </main>
         </div>
     </div>
 
-    <!-- Notifikasi Pop-up -->
-    <div id="toast" class="fixed bottom-5 right-5 bg-green-600 text-white px-4 py-3 rounded-xl shadow-lg transform translate-y-20 opacity-0 transition-all duration-300 font-bold text-sm flex items-center gap-2">
-        <i class="fa-solid fa-check-circle"></i> <span id="toastMsg">Sukses!</span>
+    <!-- Modal Settings -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal">
+            <div class="modal-header">
+                <h3>Konfigurasi Webhook Notifikasi</h3>
+                <button class="close-modal" onclick="closeModal()">&times;</button>
+            </div>
+            <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:1rem;">Masukkan Discord Webhook URL milikmu untuk menerima notifikasi otomatis langsung ke Discord.</p>
+            
+            <div class="filter-group">
+                <label>Discord Webhook URL</label>
+                <input type="text" class="input-search" id="webhookInput" placeholder="https://discord.com/api/webhooks/...">
+            </div>
+
+            <button class="btn-test" onclick="testNotification()">Kirim Notifikasi Uji Coba</button>
+        </div>
     </div>
 
-    <!-- Logika Aplikasi -->
     <script>
-        let jobs = [
-            { id: 1, title: 'Dicari: Ilustrator Book Cover Fantasi Gelap', client: 'Penerbit Aetherium', cat: 'Book Cover', budget: '$500 - $800', desc: 'Membutuhkan ilustrasi cover buku full wraparound untuk novel terbaru kami.', platform: 'Twitter' },
-            { id: 2, title: 'Splash Art untuk Karakter Game TCG', client: 'Studio Game Indie', cat: 'Splash Art', budget: '$1200', desc: 'Dicari artist yang bisa membuat splash art dengan kualitas render tinggi (mirip Riot Games).', platform: 'ArtStation' },
-            { id: 3, title: 'Environment Concept Art - Sci Fi City', client: 'Nexus Animation', cat: 'Concept Art', budget: '$400/gambar', desc: 'Dibutuhkan 5 gambar konsep kota masa depan untuk pitch animasi.', platform: 'Reddit' }
-        ];
+        let currentCategory = 'All';
 
-        let activeFilters = [];
+        function filterJobs() {
+            const searchValue = document.getElementById('searchInput').value.toLowerCase();
+            const cards = document.querySelectorAll('.job-card');
+            let visibleCount = 0;
 
-        function renderFeed() {
-            const feed = document.getElementById('jobFeed');
-            const search = document.getElementById('searchInput').value.toLowerCase();
-            
-            let filtered = jobs.filter(job => {
-                const matchSearch = job.title.toLowerCase().includes(search) || job.desc.toLowerCase().includes(search);
-                const matchFilter = activeFilters.length === 0 || activeFilters.includes(job.cat);
-                return matchSearch && matchFilter;
+            cards.forEach(card => {
+                const title = card.getAttribute('data-title').toLowerCase();
+                const category = card.getAttribute('data-category');
+
+                const matchesSearch = title.includes(searchValue);
+                const matchesCategory = (currentCategory === 'All') || (category === currentCategory);
+
+                if (matchesSearch && matchesCategory) {
+                    card.style.display = 'flex';
+                    visibleCount++;
+                } else {
+                    card.style.display = 'none';
+                }
             });
 
-            document.getElementById('jobCount').innerText = `${filtered.length} Ditemukan`;
+            document.getElementById('jobCount').innerText = `${visibleCount} Ditemukan`;
+        }
 
-            if (filtered.length === 0) {
-                feed.innerHTML = `<div class="col-span-full text-center py-10 text-gray-500 bg-gray-900/50 rounded-xl border border-gray-800"><i class="fa-solid fa-folder-open text-3xl mb-2"></i><p>Tidak ada lowongan yang cocok.</p></div>`;
+        function setCategory(cat, element) {
+            currentCategory = cat;
+            document.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
+            element.classList.add('active');
+            filterJobs();
+        }
+
+        function addSimulatedJob() {
+            const sampleJobs = [
+                {
+                    title: "Ilustrator Cover Novel Fantasi YA",
+                    cat: "Book Cover",
+                    platform: "Twitter / X",
+                    price: "$600 - $900",
+                    client: "Starlight Publishing",
+                    desc: "Mencari illustrator untuk membuat ilustrasi cover depan novel Young Adult dengan gaya semi-realistis.",
+                    url: "https://x.com/search?q=hiring%20illustrator"
+                },
+                {
+                    title: "Splash Art Karakter Anime Anime MMORPG",
+                    cat: "Splash Art",
+                    platform: "ArtStation",
+                    price: "$1500",
+                    client: "Aether Games",
+                    desc: "Dibutuhkan 1 Splash Art promosi dengan latar belakang elemen sihir yang dinamis.",
+                    url: "https://www.artstation.com/jobs"
+                }
+            ];
+
+            const randomJob = sampleJobs[Math.floor(Math.random() * sampleJobs.length)];
+            const jobGrid = document.getElementById('jobGrid');
+
+            const newCardHTML = `
+                <div class="job-card" data-category="${randomJob.cat}" data-title="${randomJob.title}">
+                    <div>
+                        <div class="card-top">
+                            <span class="tag-category">${randomJob.cat}</span>
+                            <span class="tag-platform">${randomJob.platform}</span>
+                        </div>
+                        <h3 class="job-title">${randomJob.title}</h3>
+                        <div class="job-meta">
+                            <span class="job-price">${randomJob.price}</span> • ${randomJob.client}
+                        </div>
+                        <p class="job-desc">${randomJob.desc}</p>
+                    </div>
+                    <div class="card-actions">
+                        <a href="${randomJob.url}" target="_blank" class="btn-apply">Buka Lowongan ↗</a>
+                    </div>
+                </div>
+            `;
+
+            jobGrid.insertAdjacentHTML('afterbegin', newCardHTML);
+            filterJobs();
+        }
+
+        function openModal() {
+            document.getElementById('modalOverlay').style.display = 'flex';
+        }
+
+        function closeModal() {
+            document.getElementById('modalOverlay').style.display = 'none';
+        }
+
+        function testNotification() {
+            const webhookUrl = document.getElementById('webhookInput').value;
+            if(!webhookUrl) {
+                alert("Masukkan Discord Webhook URL terlebih dahulu!");
                 return;
             }
 
-            feed.innerHTML = filtered.map(job => `
-                <div class="glass p-5 rounded-2xl border border-gray-800 hover:border-brand-500 transition-colors">
-                    <div class="flex justify-between items-start mb-2">
-                        <span class="text-[10px] font-bold px-2 py-1 bg-gray-800 rounded border border-gray-700 text-brand-400">${job.cat}</span>
-                        <span class="text-[10px] bg-blue-900/30 text-blue-400 px-2 py-1 rounded border border-blue-900"><i class="fa-brands fa-twitter"></i> ${job.platform}</span>
-                    </div>
-                    <h3 class="font-bold text-white text-md mb-1">${job.title}</h3>
-                    <p class="text-xs text-green-400 font-semibold mb-2">${job.budget} • <span class="text-gray-400">${job.client}</span></p>
-                    <p class="text-xs text-gray-400 mb-4 line-clamp-2">${job.desc}</p>
-                    <button onclick="sendToDiscord('${job.title}')" class="w-full py-1.5 bg-gray-800 hover:bg-brand-600 text-gray-200 text-xs font-bold rounded-lg border border-gray-700 transition-colors">
-                        Kirim Alert ke Discord
-                    </button>
-                </div>
-            `).join('');
-        }
-
-        function toggleFilter(cat) {
-            const btns = document.querySelectorAll('.filter-btn');
-            if (activeFilters.includes(cat)) {
-                activeFilters = activeFilters.filter(c => c !== cat);
-            } else {
-                activeFilters.push(cat);
-            }
-            
-            btns.forEach(btn => {
-                if(activeFilters.includes(btn.innerText)) {
-                    btn.classList.replace('bg-gray-800', 'bg-brand-600');
-                    btn.classList.replace('text-gray-300', 'text-white');
-                } else {
-                    btn.classList.replace('bg-brand-600', 'bg-gray-800');
-                    btn.classList.replace('text-white', 'text-gray-300');
-                }
-            });
-            renderFeed();
-        }
-
-        function toggleModal(id) {
-            const modal = document.getElementById(id);
-            modal.classList.toggle('hidden');
-        }
-
-        function showToast(msg) {
-            const toast = document.getElementById('toast');
-            document.getElementById('toastMsg').innerText = msg;
-            toast.classList.remove('translate-y-20', 'opacity-0');
-            setTimeout(() => toast.classList.add('translate-y-20', 'opacity-0'), 3000);
-        }
-
-        function testWebhook() {
-            const url = document.getElementById('webhookUrl').value;
-            if(!url) { alert("Masukkan URL Webhook terlebih dahulu!"); return; }
-            
-            // Dummy test webhook call
-            fetch(url, {
+            fetch(webhookUrl, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ content: "🔔 **TES BERHASIL!** Robot AudriArt Radar terhubung ke Discord kamu." })
-            }).then(() => {
-                showToast("Pesan tes terkirim ke Discord!");
-                toggleModal('webhookModal');
-            }).catch(() => showToast("Gagal mengirim tes (Periksa URL Webhook)"));
-        }
-
-        function sendToDiscord(title) {
-            showToast(`Mengirim "${title}" ke Discord...`);
-        }
-
-        function simulateNewJob() {
-            jobs.unshift({
-                id: Date.now(),
-                title: 'URGENT: Ilustrasi Cover Buku ' + Math.floor(Math.random() * 100),
-                client: 'Penulis Independen',
-                cat: 'Book Cover',
-                budget: '$750',
-                desc: 'Job baru masuk dari hasil pencarian otomatis sistem...',
-                platform: 'Twitter'
+                body: JSON.stringify({
+                    content: "🔔 **TES BERHASIL!** Robot AudriArt Radar terhubung ke Discord kamu."
+                })
+            }).then(res => {
+                if(res.ok) alert("Notifikasi berhasil dikirim ke Discord!");
+                else alert("Gagal mengirim notifikasi. Periksa kembali URL Webhook.");
+            }).catch(err => {
+                alert("Terjadi kesalahan: " + err);
             });
-            renderFeed();
-            showToast("Lowongan baru ditemukan oleh Radar!");
         }
-
-        // Inisialisasi awal
-        renderFeed();
     </script>
 </body>
 </html>
